@@ -27,8 +27,6 @@ const favoritesSlice = createSlice({
         state.splice(index, 1);
         //return state.filter((item) => item !== id)
       }
-
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
     },
   },
 });

@@ -21,7 +21,7 @@ const FavoritesPage = () => {
       setLoading(true);
       try {
         const recipesData: Recipe[] = await Promise.all(
-          favorites.map(async (id) => {
+          favorites.map(async (id: string) => {
             const response = await fetch(`${baseUrlApi}/lookup.php?i=${id}`);
             const data = await response.json();
             return data.meals?.[0];
