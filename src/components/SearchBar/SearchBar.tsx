@@ -12,6 +12,7 @@ const SearchBar = ({ value, onChange }: SearchBarProps) => {
       label="Cerca ricetta"
       value={value}
       onChange={(e) => onChange(e.target.value)}
+      sx={{marginBottom: 4}}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">

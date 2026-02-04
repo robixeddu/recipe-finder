@@ -16,6 +16,7 @@ const RecipeDetailPage = () => {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [recipeRandom, setRecipeRandom] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingRandom, setLoadingRandom] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const { isFavorite, toggle } = useFavorites();
 
@@ -32,26 +33,28 @@ const RecipeDetailPage = () => {
         setLoading(false);
       }
     };
-    
-    const fetchRecipeBottom = async () => {
-        try {
-          setError(null);
-          setLoading(true);
-          const data = await fetchRecipeRandom();
-          setRecipeRandom(data);
-        } catch (err) {
-          setError((err as Error).message);
-        } finally {
-          setLoading(false);
-        }
-      };
 
-    id && fetchRecipe();
-    fetchRecipeBottom()
+    if (id) {
+      fetchRecipe();
+    }
   }, [id]);
 
+  useEffect(() => {
+    const fetchRecipeBottom = async () => {
+      try {
+        setLoadingRandom(true);
+        const data = await fetchRecipeRandom();
+        setRecipeRandom(data);
+      } catch (err) {
+        console.error("Failed to load random recipe:", err);
+        // Don't set main error state, this is optional content
+      } finally {
+        setLoadingRandom(false);
+      }
+    };
 
-  const ingredients = getIngredients(recipe!);
+    fetchRecipeBottom();
+  }, [id]);
 
   if (error) {
     return (
@@ -67,9 +70,11 @@ const RecipeDetailPage = () => {
         </Button>
       </Container>
     );
-  }      
+  }
 
-  if (loading) return <Loader />;
+  if (loading || loadingRandom) return <Loader />;
+
+  const ingredients = recipe ? getIngredients(recipe) : [];
 
   return (
     <main>
@@ -159,7 +164,7 @@ const RecipeDetailPage = () => {
                   </Box>
                 </section>
 
-                <section aria-labelledby="instructions-title">
+                <section aria-labelledby="instructions-title" style={{ marginBottom: 30 }}>
                   <Typography
                     variant="h5"
                     component="h2"
@@ -174,17 +179,17 @@ const RecipeDetailPage = () => {
                   </Typography>
                 </section>
 
-                <section>
+                <section aria-labelledby="random-recipe-title">
                   <Typography
                     variant="h5"
                     component="h2"
-                    id="instructions-title"
+                    id="random-recipe-title"
                     gutterBottom
                   >
                     Random Recipe
                   </Typography>
 
-                  <RouterLink to={`/recipe/${recipeRandom?.idMeal}`}>
+                  <RouterLink to={`/recipe/${recipeRandom?.idMeal}`} style={{ textDecoration: "underline" }}>
                     {recipeRandom?.strMeal}
                   </RouterLink>
                 </section>

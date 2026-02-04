@@ -39,8 +39,6 @@ const HomePage = () => {
     <Container sx={{ mt: 4 }}>
       <SearchBar value={search} onChange={setSearch} />
 
-      <Box sx={{ marginBottom: 4 }}></Box>
-
       {loading && <Loader />}
 
       {!search && !loading && <PageTitle title="Ricette dal mondo" />}
