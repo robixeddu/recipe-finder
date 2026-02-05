@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Container, Grid } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import SearchBar from "../components/SearchBar/SearchBar";
 import {
   fetchCountriesRecipes,
